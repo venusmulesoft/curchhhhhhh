@@ -3,7 +3,7 @@ import { Plus, Search, Edit, Trash2, Eye, Users, Shield, UserCheck, UserX } from
 import * as mockData from '../../data/mockData';
 
 const UserManagement = () => {
-  const [userList, setUserList] = useState([...mockData.mockWeredaBetekihinet, ...mockData.hageresibket]);
+  const [userList, setUserList] = useState([...mockData.mockWeredaBetekihinet, ...mockData.mockHageresibket]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterRole, setFilterRole] = useState('all');
   const [filterStatus, setFilterStatus] = useState('all');

@@ -3,7 +3,7 @@ import { Plus, Search, Edit, Trash2, Eye, Filter, Download, Calendar, MapPin, Ph
 import * as mockData from '../../data/mockData';
 
 const BelieverManagement = () => {
-  const [believerList, setBelieverList] = useState(mockData.believers);
+  const [believerList, setBelieverList] = useState(mockData.mockBelievers);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterRole, setFilterRole] = useState('all');
   const [filterStatus, setFilterStatus] = useState('all');
@@ -51,7 +51,7 @@ const BelieverManagement = () => {
   };
 
   const getAtbiyaName = (atbiyaId) => {
-    const atbiya = mockData.atbiya.find(a => a.id === atbiyaId);
+    const atbiya = mockData.mockAtbiya.find(a => a.id === atbiyaId);
     return atbiya ? atbiya.name : 'Unknown';
   };
 
@@ -155,7 +155,7 @@ const BelieverManagement = () => {
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="all">All Atbiya</option>
-                {mockData.atbiya.map(atbiya => (
+                {mockData.mockAtbiya.map(atbiya => (
                   <option key={atbiya.id} value={atbiya.id}>{atbiya.name}</option>
                 ))}
               </select>
@@ -439,7 +439,7 @@ const BelieverManagement = () => {
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   >
                     <option value="">Select Atbiya</option>
-                    {mockData.atbiya.map(atbiya => (
+                    {mockData.mockAtbiya.map(atbiya => (
                       <option key={atbiya.id} value={atbiya.id}>{atbiya.name}</option>
                     ))}
                   </select>

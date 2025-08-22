@@ -9,10 +9,10 @@ const CertificateGeneration = () => {
 
   const getRecordsByType = () => {
     switch (selectedType) {
-      case 'baptism': return mockData.baptisms;
-      case 'marriage': return mockData.marriages;
-      case 'death': return mockData.deaths;
-      case 'id': return mockData.believers;
+      case 'baptism': return mockData.mockBaptisms;
+      case 'marriage': return mockData.mockMarriages;
+      case 'death': return mockData.mockDeaths;
+      case 'id': return mockData.mockBelievers;
       default: return [];
     }
   };
@@ -32,7 +32,7 @@ const CertificateGeneration = () => {
   });
 
   const getAtbiyaName = (atbiyaId) => {
-    const atbiya = mockData.atbiya.find(a => a.id === atbiyaId);
+    const atbiya = mockData.mockAtbiya.find(a => a.id === atbiyaId);
     return atbiya ? atbiya.name : 'Unknown';
   };
 

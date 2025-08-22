@@ -45,11 +45,11 @@ const Reports = () => {
 
   const getWeredaPerformance = () => {
     return mockData.mockWeredaBetekihinet.map(wereda => {
-      const atbiya = mockData.atbiya.filter(a => a.weredaId === wereda.id);
-      const believers = mockData.believers.filter(b => atbiya.some(a => a.id === b.atbiyaId));
-      const baptisms = mockData.baptisms.filter(b => atbiya.some(a => a.id === b.atbiyaId));
-      const marriages = mockData.marriages.filter(m => atbiya.some(a => a.id === m.atbiyaId));
-      const deaths = mockData.deaths.filter(d => atbiya.some(a => a.id === d.atbiyaId));
+      const atbiya = mockData.mockAtbiya.filter(a => a.weredaId === wereda.id);
+      const believers = mockData.mockBelievers.filter(b => atbiya.some(a => a.id === b.atbiyaId));
+      const baptisms = mockData.mockBaptisms.filter(b => atbiya.some(a => a.id === b.atbiyaId));
+      const marriages = mockData.mockMarriages.filter(m => atbiya.some(a => a.id === m.atbiyaId));
+      const deaths = mockData.mockDeaths.filter(d => atbiya.some(a => a.id === d.atbiyaId));
       
       return {
         name: wereda.name,

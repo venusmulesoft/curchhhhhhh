@@ -8,18 +8,18 @@ const Statistics = () => {
   const [selectedAtbiya, setSelectedAtbiya] = useState('all');
 
   // Calculate statistics
-  const totalBelievers = mockData.believers.length;
-  const totalAtbiya = mockData.atbiya.length;
-  const totalBaptisms = mockData.baptisms.length;
-  const totalMarriages = mockData.marriages.length;
-  const totalDeaths = mockData.deaths.length;
+  const totalBelievers = mockData.mockBelievers.length;
+  const totalAtbiya = mockData.mockAtbiya.length;
+  const totalBaptisms = mockData.mockBaptisms.length;
+  const totalMarriages = mockData.mockMarriages.length;
+  const totalDeaths = mockData.mockDeaths.length;
 
   // Role distribution
   const roleDistribution = [
-    { name: 'Elders', value: mockData.believers.filter(b => b.role === 'elder').length, color: '#8B5CF6' },
-    { name: 'Adults', value: mockData.believers.filter(b => b.role === 'adult').length, color: '#F59E0B' },
-    { name: 'Youth', value: mockData.believers.filter(b => b.role === 'youth').length, color: '#3B82F6' },
-    { name: 'Children', value: mockData.believers.filter(b => b.role === 'child').length, color: '#10B981' },
+    { name: 'Elders', value: mockData.mockBelievers.filter(b => b.role === 'elder').length, color: '#8B5CF6' },
+    { name: 'Adults', value: mockData.mockBelievers.filter(b => b.role === 'adult').length, color: '#F59E0B' },
+    { name: 'Youth', value: mockData.mockBelievers.filter(b => b.role === 'youth').length, color: '#3B82F6' },
+    { name: 'Children', value: mockData.mockBelievers.filter(b => b.role === 'child').length, color: '#10B981' },
   ];
 
   // Monthly trends
@@ -33,11 +33,11 @@ const Statistics = () => {
   ];
 
   // Atbiya performance
-  const atbiyaPerformance = mockData.atbiya.map(atbiya => {
-    const believers = mockData.believers.filter(b => b.atbiyaId === atbiya.id).length;
-    const baptisms = mockData.baptisms.filter(b => b.atbiyaId === atbiya.id).length;
-    const marriages = mockData.marriages.filter(m => m.atbiyaId === atbiya.id).length;
-    const deaths = mockData.deaths.filter(d => d.atbiyaId === atbiya.id).length;
+  const atbiyaPerformance = mockData.mockAtbiya.map(atbiya => {
+    const believers = mockData.mockBelievers.filter(b => b.atbiyaId === atbiya.id).length;
+    const baptisms = mockData.mockBaptisms.filter(b => b.atbiyaId === atbiya.id).length;
+    const marriages = mockData.mockMarriages.filter(m => m.atbiyaId === atbiya.id).length;
+    const deaths = mockData.mockDeaths.filter(d => d.atbiyaId === atbiya.id).length;
     
     return {
       name: atbiya.name,
@@ -51,17 +51,17 @@ const Statistics = () => {
 
   // Age distribution
   const ageDistribution = [
-    { range: '0-17', count: mockData.believers.filter(b => b.role === 'child').length, color: '#10B981' },
-    { range: '18-25', count: mockData.believers.filter(b => b.role === 'youth').length, color: '#3B82F6' },
-    { range: '26-59', count: mockData.believers.filter(b => b.role === 'adult').length, color: '#F59E0B' },
-    { range: '60+', count: mockData.believers.filter(b => b.role === 'elder').length, color: '#8B5CF6' },
+    { range: '0-17', count: mockData.mockBelievers.filter(b => b.role === 'child').length, color: '#10B981' },
+    { range: '18-25', count: mockData.mockBelievers.filter(b => b.role === 'youth').length, color: '#3B82F6' },
+    { range: '26-59', count: mockData.mockBelievers.filter(b => b.role === 'adult').length, color: '#F59E0B' },
+    { range: '60+', count: mockData.mockBelievers.filter(b => b.role === 'elder').length, color: '#8B5CF6' },
   ];
 
   // Recent activities
   const recentActivities = [
-    ...mockData.baptisms.slice(0, 3).map(b => ({ type: 'Baptism', name: b.believerName, date: b.baptismDate, atbiya: mockData.atbiya.find(a => a.id === b.atbiyaId)?.name })),
-    ...mockData.marriages.slice(0, 3).map(m => ({ type: 'Marriage', name: `${m.groomName} & ${m.brideName}`, date: m.marriageDate, atbiya: mockData.atbiya.find(a => a.id === m.atbiyaId)?.name })),
-    ...mockData.deaths.slice(0, 3).map(d => ({ type: 'Death', name: d.believerName, date: d.deathDate, atbiya: mockData.atbiya.find(a => a.id === d.atbiyaId)?.name }))
+    ...mockData.mockBaptisms.slice(0, 3).map(b => ({ type: 'Baptism', name: b.believerName, date: b.baptismDate, atbiya: mockData.mockAtbiya.find(a => a.id === b.atbiyaId)?.name })),
+    ...mockData.mockMarriages.slice(0, 3).map(m => ({ type: 'Marriage', name: `${m.groomName} & ${m.brideName}`, date: m.marriageDate, atbiya: mockData.mockAtbiya.find(a => a.id === m.atbiyaId)?.name })),
+    ...mockData.mockDeaths.slice(0, 3).map(d => ({ type: 'Death', name: d.believerName, date: d.deathDate, atbiya: mockData.mockAtbiya.find(a => a.id === d.atbiyaId)?.name }))
   ].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
 
   const formatDate = (dateString) => {
@@ -103,7 +103,7 @@ const Statistics = () => {
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="all">All Atbiya</option>
-            {mockData.atbiya.map(atbiya => (
+            {mockData.mockAtbiya.map(atbiya => (
               <option key={atbiya.id} value={atbiya.id}>{atbiya.name}</option>
             ))}
           </select>

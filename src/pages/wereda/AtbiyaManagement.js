@@ -3,7 +3,7 @@ import { Plus, Search, Edit, Trash2, Eye, Filter } from 'lucide-react';
 import * as mockData from '../../data/mockData';
 
 const AtbiyaManagement = () => {
-  const [atbiyaList, setAtbiyaList] = useState(mockData.atbiya);
+  const [atbiyaList, setAtbiyaList] = useState(mockData.mockAtbiya);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterRole, setFilterRole] = useState('all');
   const [showAddModal, setShowAddModal] = useState(false);
