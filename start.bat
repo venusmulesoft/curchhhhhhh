@@ -1,0 +1,9 @@
+@echo off
+echo Starting Church Management System Frontend...
+echo.
+echo Installing dependencies...
+npm install
+echo.
+echo Starting development server...
+npm start
+pause
