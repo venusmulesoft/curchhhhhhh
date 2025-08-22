@@ -19,7 +19,8 @@ export const mockUsers = [
       }
     },
     isActive: true,
-    lastLogin: new Date('2024-01-15T10:30:00Z')
+    lastLogin: new Date('2024-01-15T10:30:00Z'),
+    createdAt: new Date('2023-01-01T00:00:00Z')
   },
   {
     id: 2,
@@ -40,7 +41,8 @@ export const mockUsers = [
       }
     },
     isActive: true,
-    lastLogin: new Date('2024-01-15T09:15:00Z')
+    lastLogin: new Date('2024-01-15T09:15:00Z'),
+    createdAt: new Date('2023-01-15T00:00:00Z')
   }
 ];
 
@@ -71,7 +73,8 @@ export const mockHageresibket = [
       canSystemSettings: true
     },
     isActive: true,
-    lastLogin: new Date('2024-01-15T08:00:00Z')
+    lastLogin: new Date('2024-01-15T08:00:00Z'),
+    createdAt: new Date('2022-01-01T00:00:00Z')
   }
 ];
 
@@ -86,6 +89,8 @@ export const mockWeredaBetekihinet = [
       woreda: 'Kolfe Keranio',
       kebele: 'Kebele 01'
     },
+    phone: '+251911111111',
+    email: 'stmary@church.org',
     hageresibket: 1,
     isActive: true,
     createdAt: new Date('2023-01-01T00:00:00Z')
@@ -99,6 +104,8 @@ export const mockWeredaBetekihinet = [
       woreda: 'Yeka',
       kebele: 'Kebele 02'
     },
+    phone: '+251922222222',
+    email: 'stgabriel@church.org',
     hageresibket: 1,
     isActive: true,
     createdAt: new Date('2023-02-01T00:00:00Z')
@@ -112,6 +119,8 @@ export const mockWeredaBetekihinet = [
       woreda: 'Bole',
       kebele: 'Kebele 03'
     },
+    phone: '+251933333333',
+    email: 'stmichael@church.org',
     hageresibket: 1,
     isActive: true,
     createdAt: new Date('2023-03-01T00:00:00Z')
@@ -123,30 +132,39 @@ export const mockAtbiya = [
   {
     id: 1,
     name: 'Father Yohannes',
-    role: 'Priest',
+    role: 'priest',
     phone: '+251944567890',
     email: 'yohannes@church.org',
     weredaBetekihinet: 1,
+    location: 'St. Mary Church',
+    status: 'active',
+    believerCount: 45,
     isActive: true,
     createdAt: new Date('2023-01-15T00:00:00Z')
   },
   {
     id: 2,
     name: 'Deacon Mariam',
-    role: 'Deacon',
+    role: 'deacon',
     phone: '+251955678901',
     email: 'mariam@church.org',
     weredaBetekihinet: 1,
+    location: 'St. Mary Church',
+    status: 'active',
+    believerCount: 32,
     isActive: true,
     createdAt: new Date('2023-02-15T00:00:00Z')
   },
   {
     id: 3,
-    name: 'Sunday School Teacher',
-    role: 'Sunday School Teacher',
+    name: 'Teacher Alemayehu',
+    role: 'sunday_school_teacher',
     phone: '+251966789012',
-    email: 'teacher@church.org',
+    email: 'alemayehu@church.org',
     weredaBetekihinet: 1,
+    location: 'St. Mary Church',
+    status: 'active',
+    believerCount: 28,
     isActive: true,
     createdAt: new Date('2023-03-15T00:00:00Z')
   }
@@ -156,64 +174,49 @@ export const mockAtbiya = [
 export const mockBelievers = [
   {
     id: 1,
-    firstName: 'Kebede',
-    lastName: 'Alemu',
-    gender: 'Male',
-    dateOfBirth: new Date('1980-05-15T00:00:00Z'),
+    name: 'Kebede Alemu',
+    role: 'adult',
+    gender: 'male',
+    dateOfBirth: '1980-05-15',
     phone: '+251977890123',
     email: 'kebede@email.com',
-    address: {
-      region: 'Addis Ababa',
-      zone: 'Central',
-      woreda: 'Kolfe Keranio',
-      kebele: 'Kebele 01',
-      houseNumber: '123'
-    },
-    role: 'Church Member',
+    idNumber: 'AA123456B',
+    address: 'Kolfe Keranio, Kebele 01, House 123',
+    atbiyaId: 1,
+    status: 'active',
     weredaBetekihinet: 1,
-    atbiya: 1,
     isActive: true,
     createdAt: new Date('2023-01-20T00:00:00Z')
   },
   {
     id: 2,
-    firstName: 'Tigist',
-    lastName: 'Haile',
-    gender: 'Female',
-    dateOfBirth: new Date('1985-08-20T00:00:00Z'),
+    name: 'Tigist Haile',
+    role: 'youth',
+    gender: 'female',
+    dateOfBirth: '1995-08-20',
     phone: '+251988901234',
     email: 'tigist@email.com',
-    address: {
-      region: 'Addis Ababa',
-      zone: 'Central',
-      woreda: 'Kolfe Keranio',
-      kebele: 'Kebele 01',
-      houseNumber: '456'
-    },
-    role: 'Sunday School Student',
+    idNumber: 'AA234567C',
+    address: 'Kolfe Keranio, Kebele 01, House 456',
+    atbiyaId: 3,
+    status: 'active',
     weredaBetekihinet: 1,
-    atbiya: 3,
     isActive: true,
     createdAt: new Date('2023-02-20T00:00:00Z')
   },
   {
     id: 3,
-    firstName: 'Abebe',
-    lastName: 'Tessema',
-    gender: 'Male',
-    dateOfBirth: new Date('1990-12-10T00:00:00Z'),
+    name: 'Abebe Tessema',
+    role: 'elder',
+    gender: 'male',
+    dateOfBirth: '1950-12-10',
     phone: '+251999012345',
     email: 'abebe@email.com',
-    address: {
-      region: 'Addis Ababa',
-      zone: 'Central',
-      woreda: 'Kolfe Keranio',
-      kebele: 'Kebele 01',
-      houseNumber: '789'
-    },
-    role: 'Church Member',
+    idNumber: 'AA345678D',
+    address: 'Kolfe Keranio, Kebele 01, House 789',
+    atbiyaId: 1,
+    status: 'active',
     weredaBetekihinet: 1,
-    atbiya: 1,
     isActive: true,
     createdAt: new Date('2023-03-20T00:00:00Z')
   }
@@ -223,27 +226,39 @@ export const mockBelievers = [
 export const mockBaptisms = [
   {
     id: 1,
-    believer: 1,
-    baptismDate: new Date('2023-06-15T00:00:00Z'),
+    believerName: 'Tigist Haile',
+    believerAge: 28,
+    baptismNumber: 'BAP2024001',
+    baptismDate: '2024-06-15',
     baptismPlace: 'St. Mary Church',
+    location: 'St. Mary Church',
+    atbiyaId: 1,
     priest: 'Father Yohannes',
     godfather: 'Ato Haile',
     godmother: 'Wro Tigist',
     weredaBetekihinet: 1,
+    status: 'completed',
+    notes: 'Beautiful ceremony with family present',
     isActive: true,
-    createdAt: new Date('2023-06-15T00:00:00Z')
+    createdAt: new Date('2024-06-15T00:00:00Z')
   },
   {
     id: 2,
-    believer: 2,
-    baptismDate: new Date('2023-07-20T00:00:00Z'),
+    believerName: 'Abebe Tessema',
+    believerAge: 25,
+    baptismNumber: 'BAP2024002',
+    baptismDate: '2024-07-20',
     baptismPlace: 'St. Mary Church',
+    location: 'St. Mary Church',
+    atbiyaId: 1,
     priest: 'Father Yohannes',
     godfather: 'Ato Abebe',
     godmother: 'Wro Mariam',
     weredaBetekihinet: 1,
+    status: 'completed',
+    notes: 'Joyful celebration',
     isActive: true,
-    createdAt: new Date('2023-07-20T00:00:00Z')
+    createdAt: new Date('2024-07-20T00:00:00Z')
   }
 ];
 
@@ -251,15 +266,22 @@ export const mockBaptisms = [
 export const mockMarriages = [
   {
     id: 1,
-    groom: 1,
-    bride: 2,
-    marriageDate: new Date('2023-09-10T00:00:00Z'),
+    groomName: 'Kebede Alemu',
+    groomAge: 30,
+    brideName: 'Tigist Haile',
+    brideAge: 28,
+    marriageNumber: 'MAR2024001',
+    marriageDate: '2024-09-10',
     marriagePlace: 'St. Mary Church',
+    location: 'St. Mary Church',
+    atbiyaId: 1,
     priest: 'Father Yohannes',
     witnesses: ['Ato Haile', 'Wro Mariam'],
     weredaBetekihinet: 1,
+    status: 'completed',
+    notes: 'Beautiful wedding ceremony',
     isActive: true,
-    createdAt: new Date('2023-09-10T00:00:00Z')
+    createdAt: new Date('2024-09-10T00:00:00Z')
   }
 ];
 
@@ -267,15 +289,22 @@ export const mockMarriages = [
 export const mockDeaths = [
   {
     id: 1,
-    believer: 3,
-    deathDate: new Date('2023-11-05T00:00:00Z'),
+    believerName: 'Abebe Tessema',
+    believerAge: 73,
+    deathNumber: 'DEA2024001',
+    deathDate: '2024-11-05',
+    funeralDate: '2024-11-07',
     deathPlace: 'Addis Ababa',
+    location: 'St. Mary Cemetery',
     causeOfDeath: 'Natural causes',
-    burialDate: new Date('2023-11-07T00:00:00Z'),
+    burialDate: '2024-11-07',
     burialPlace: 'St. Mary Cemetery',
+    atbiyaId: 1,
     weredaBetekihinet: 1,
+    status: 'completed',
+    notes: 'Peaceful passing, well attended funeral',
     isActive: true,
-    createdAt: new Date('2023-11-05T00:00:00Z')
+    createdAt: new Date('2024-11-05T00:00:00Z')
   }
 ];
 
@@ -287,15 +316,14 @@ export const mockStatistics = {
   totalMarriages: 12,
   totalDeaths: 3,
   believersByRole: {
-    'Church Member': 80,
-    'Sunday School Student': 45,
-    'Sunday School Teacher': 15,
-    'Deacon': 5,
-    'Priest': 5
+    'elder': 25,
+    'adult': 80,
+    'youth': 35,
+    'child': 10
   },
   believersByGender: {
-    'Male': 75,
-    'Female': 75
+    'male': 75,
+    'female': 75
   },
   monthlyBaptisms: [
     { month: 'Jan', count: 2 },

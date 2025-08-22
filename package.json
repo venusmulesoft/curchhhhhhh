@@ -1,42 +1,62 @@
 {
-  "name": "church-management-frontend",
-  "version": "1.0.0",
+  "name": "church-management-system",
+  "version": "2.0.0",
   "private": true,
+  "description": "Professional Church Management System for Ethiopian Orthodox Churches",
+  "author": "Church Management Team",
+  "license": "MIT",
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.3.0",
-    "@testing-library/user-event": "^13.5.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.3.0",
-    "react-scripts": "5.0.1",
-    "axios": "^1.4.0",
-    "react-hook-form": "^7.44.3",
-    "react-hot-toast": "^2.4.0",
-    "recharts": "^2.7.2",
-    "lucide-react": "^0.263.1",
-    "clsx": "^1.2.1",
-    "tailwind-merge": "^1.14.0",
+    "@headlessui/react": "^1.7.17",
+    "@heroicons/react": "^2.0.18",
+    "@hookform/resolvers": "^3.3.2",
+    "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-dropdown-menu": "^2.0.6",
+    "@radix-ui/react-select": "^2.0.0",
+    "@radix-ui/react-toast": "^1.1.5",
+    "@tanstack/react-query": "^5.8.4",
+    "@testing-library/jest-dom": "^6.1.4",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.5.1",
+    "axios": "^1.6.0",
+    "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
+    "framer-motion": "^10.16.4",
+    "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.29",
-    "html2canvas": "^1.4.1",
-    "react-select": "^5.7.4",
-    "react-datepicker": "^4.16.0",
-    "react-table": "^7.8.0",
-    "framer-motion": "^10.16.4"
+    "lucide-react": "^0.294.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.47.0",
+    "react-hot-toast": "^2.4.1",
+    "react-router-dom": "^6.18.0",
+    "react-scripts": "5.0.1",
+    "recharts": "^2.8.0",
+    "tailwind-merge": "^2.0.0",
+    "web-vitals": "^3.5.0",
+    "yup": "^1.3.3",
+    "zustand": "^4.4.6"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
+    "format": "prettier --write src/**/*.{js,jsx,ts,tsx,json,css,md}",
+    "type-check": "tsc --noEmit"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "no-unused-vars": "warn",
+      "no-console": "warn",
+      "prefer-const": "error"
+    }
   },
   "browserslist": {
     "production": [
@@ -51,8 +71,14 @@
     ]
   },
   "devDependencies": {
-    "tailwindcss": "^3.3.2",
-    "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.24"
-  }
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.53.0",
+    "postcss": "^8.4.31",
+    "prettier": "^3.0.3",
+    "tailwindcss": "^3.3.5",
+    "typescript": "^5.2.2"
+  },
+  "proxy": "http://localhost:3001"
 }

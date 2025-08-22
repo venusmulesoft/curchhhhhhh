@@ -10,6 +10,7 @@ import {
   Activity,
   Shield
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { mockHageresibketStats } from '../../data/mockData';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -21,7 +22,7 @@ const DashboardHome = () => {
       title: 'Total WeredaBetekihinet',
       value: mockHageresibketStats.totalWeredaBetekihinet,
       icon: Building2,
-      color: 'bg-primary-500',
+      color: 'bg-blue-500',
       change: '+1',
       changeType: 'positive',
       description: 'Active church branches'
@@ -30,7 +31,7 @@ const DashboardHome = () => {
       title: 'Total Believers',
       value: mockHageresibketStats.totalBelievers,
       icon: Users,
-      color: 'bg-success-500',
+      color: 'bg-green-500',
       change: '+45',
       changeType: 'positive',
       description: 'Across all wereda'
@@ -39,7 +40,7 @@ const DashboardHome = () => {
       title: 'Total Atbiya',
       value: mockHageresibketStats.totalAtbiya,
       icon: Shield,
-      color: 'bg-blue-500',
+      color: 'bg-purple-500',
       change: '+3',
       changeType: 'positive',
       description: 'Church workers'
@@ -75,7 +76,7 @@ const DashboardHome = () => {
 
   const weredaPerformance = mockHageresibketStats.weredaStats.map(wereda => ({
     ...wereda,
-    performance: Math.round((wereda.believers / 200) * 100), // Assuming 200 is max capacity
+    performance: Math.round((wereda.believers / 200) * 100),
     status: wereda.believers > 150 ? 'Excellent' : wereda.believers > 100 ? 'Good' : 'Needs Attention'
   }));
 
@@ -116,50 +117,63 @@ const DashboardHome = () => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'Excellent': return 'text-success-600 bg-success-100';
-      case 'Good': return 'text-warning-600 bg-warning-100';
-      case 'Needs Attention': return 'text-danger-600 bg-danger-100';
-      default: return 'text-gray-600 bg-gray-100';
+      case 'Excellent': return 'text-green-600 bg-green-100 dark:bg-green-900/20 dark:text-green-400';
+      case 'Good': return 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900/20 dark:text-yellow-400';
+      case 'Needs Attention': return 'text-red-600 bg-red-100 dark:bg-red-900/20 dark:text-red-400';
+      default: return 'text-gray-600 bg-gray-100 dark:bg-gray-800 dark:text-gray-400';
     }
   };
 
   return (
     <div className="space-y-6">
       {/* Welcome Header */}
-      <div className="bg-gradient-to-r from-primary-600 to-primary-700 rounded-lg p-6 text-white">
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-700 dark:to-blue-800 rounded-lg p-6 text-white"
+      >
         <h1 className="text-2xl font-bold mb-2">
           Welcome, Super Admin! 👑
         </h1>
-        <p className="text-primary-100">
+        <p className="text-blue-100">
           Managing {mockHageresibketStats.totalWeredaBetekihinet} WeredaBetekihinet across {user?.contactInfo?.address?.region || 'the diocese'}
         </p>
-      </div>
+      </motion.div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
         {statsCards.map((card, index) => {
           const Icon = card.icon;
           return (
-            <div key={index} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className={`p-3 rounded-full ${card.color}`}>
-                  <Icon className="h-6 w-6 text-white" />
+            <motion.div 
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="card"
+            >
+              <div className="card-content">
+                <div className="flex items-center justify-between mb-4">
+                  <div className={`p-3 rounded-full ${card.color}`}>
+                    <Icon className="h-6 w-6 text-white" />
+                  </div>
+                  <div className="text-right">
+                    <p className={`text-sm font-medium ${
+                      card.changeType === 'positive' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+                    }`}>
+                      {card.change}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">vs last month</p>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <p className={`text-sm font-medium ${
-                    card.changeType === 'positive' ? 'text-success-600' : 'text-danger-600'
-                  }`}>
-                    {card.change}
-                  </p>
-                  <p className="text-xs text-gray-500">vs last month</p>
+                <div>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{card.value}</p>
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{card.title}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{card.description}</p>
                 </div>
               </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900 mb-1">{card.value}</p>
-                <p className="text-sm font-medium text-gray-600">{card.title}</p>
-                <p className="text-xs text-gray-500 mt-1">{card.description}</p>
-              </div>
-            </div>
+            </motion.div>
           );
         })}
       </div>
@@ -167,135 +181,171 @@ const DashboardHome = () => {
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Wereda Performance */}
-        <div className="lg:col-span-2">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">WeredaBetekihinet Performance</h2>
-            <div className="space-y-4">
-              {weredaPerformance.map((wereda) => (
-                <div key={wereda.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <Building2 className="h-5 w-5 text-primary-600" />
-                    <div>
-                      <p className="font-medium text-gray-900">{wereda.name}</p>
-                      <p className="text-sm text-gray-600">{wereda.believers} believers</p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(wereda.status)}`}>
-                      {wereda.status}
-                    </div>
-                    <p className="text-sm text-gray-600 mt-1">{wereda.performance}% capacity</p>
-                  </div>
-                </div>
-              ))}
+        <motion.div 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="lg:col-span-2"
+        >
+          <div className="card">
+            <div className="card-header">
+              <h2 className="card-title">WeredaBetekihinet Performance</h2>
             </div>
-            <div className="mt-4 pt-4 border-t border-gray-200">
-              <button className="text-sm text-primary-600 hover:text-primary-700 font-medium">
-                View detailed performance →
-              </button>
+            <div className="card-content">
+              <div className="space-y-4">
+                {weredaPerformance.map((wereda) => (
+                  <div key={wereda.id} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div className="flex items-center space-x-3">
+                      <Building2 className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                      <div>
+                        <p className="font-medium text-gray-900 dark:text-white">{wereda.name}</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">{wereda.believers} believers</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(wereda.status)}`}>
+                        {wereda.status}
+                      </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{wereda.performance}% capacity</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <button className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium">
+                  View detailed performance →
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Recent Activities */}
-        <div className="lg:col-span-1">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Recent Activities</h2>
-            <div className="space-y-4">
-              {recentActivities.map((activity) => {
-                const Icon = activity.icon;
-                return (
-                  <div key={activity.id} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors duration-200">
-                    <div className={`p-2 rounded-full bg-gray-100 ${activity.color}`}>
-                      <Icon className="h-4 w-4" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900">{activity.message}</p>
-                      <p className="text-xs text-gray-500">{activity.time}</p>
-                    </div>
-                  </div>
-                );
-              })}
+        <motion.div 
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="lg:col-span-1"
+        >
+          <div className="card">
+            <div className="card-header">
+              <h2 className="card-title">Recent Activities</h2>
             </div>
-            <div className="mt-4 pt-4 border-t border-gray-200">
-              <button className="text-sm text-primary-600 hover:text-primary-700 font-medium">
-                View all activities →
-              </button>
+            <div className="card-content">
+              <div className="space-y-4">
+                {recentActivities.map((activity) => {
+                  const Icon = activity.icon;
+                  return (
+                    <div key={activity.id} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200">
+                      <div className={`p-2 rounded-full bg-gray-100 dark:bg-gray-800 ${activity.color}`}>
+                        <Icon className="h-4 w-4" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-gray-900 dark:text-white">{activity.message}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">{activity.time}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <button className="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium">
+                  View all activities →
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Bottom Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* System Health */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">System Health</h2>
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <div className="h-3 w-3 bg-success-500 rounded-full"></div>
-                <span className="text-sm text-gray-700">Database Connection</span>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="card"
+        >
+          <div className="card-header">
+            <h2 className="card-title">System Health</h2>
+          </div>
+          <div className="card-content">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="h-3 w-3 bg-green-500 rounded-full"></div>
+                  <span className="text-sm text-gray-700 dark:text-gray-300">Database Connection</span>
+                </div>
+                <span className="text-sm text-green-600 dark:text-green-400 font-medium">Healthy</span>
               </div>
-              <span className="text-sm text-success-600 font-medium">Healthy</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <div className="h-3 w-3 bg-success-500 rounded-full"></div>
-                <span className="text-sm text-gray-700">API Services</span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="h-3 w-3 bg-green-500 rounded-full"></div>
+                  <span className="text-sm text-gray-700 dark:text-gray-300">API Services</span>
+                </div>
+                <span className="text-sm text-green-600 dark:text-green-400 font-medium">Operational</span>
               </div>
-              <span className="text-sm text-success-600 font-medium">Operational</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <div className="h-3 w-3 bg-success-500 rounded-full"></div>
-                <span className="text-sm text-gray-700">Data Sync</span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="h-3 w-3 bg-green-500 rounded-full"></div>
+                  <span className="text-sm text-gray-700 dark:text-gray-300">Data Sync</span>
+                </div>
+                <span className="text-sm text-green-600 dark:text-green-400 font-medium">Up to date</span>
               </div>
-              <span className="text-sm text-success-600 font-medium">Up to date</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <div className="h-3 w-3 bg-success-500 rounded-full"></div>
-                <span className="text-sm text-gray-700">Security</span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="h-3 w-3 bg-green-500 rounded-full"></div>
+                  <span className="text-sm text-gray-700 dark:text-gray-300">Security</span>
+                </div>
+                <span className="text-sm text-green-600 dark:text-green-400 font-medium">Protected</span>
               </div>
-              <span className="text-sm text-success-600 font-medium">Protected</span>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Quick Actions */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
-          <div className="space-y-3">
-            <button className="w-full p-3 bg-primary-100 text-primary-700 rounded-lg hover:bg-primary-200 transition-colors duration-200 text-left">
-              <div className="flex items-center space-x-3">
-                <Building2 className="h-5 w-5" />
-                <div>
-                  <p className="font-medium">Add New Wereda</p>
-                  <p className="text-sm opacity-80">Register a new church branch</p>
-                </div>
-              </div>
-            </button>
-            <button className="w-full p-3 bg-success-100 text-success-700 rounded-lg hover:bg-success-200 transition-colors duration-200 text-left">
-              <div className="flex items-center space-x-3">
-                <Users className="h-5 w-5" />
-                <div>
-                  <p className="font-medium">Manage Users</p>
-                  <p className="text-sm opacity-80">Create and manage admin accounts</p>
-                </div>
-              </div>
-            </button>
-            <button className="w-full p-3 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors duration-200 text-left">
-              <div className="flex items-center space-x-3">
-                <TrendingUp className="h-5 w-5" />
-                <div>
-                  <p className="font-medium">Generate Reports</p>
-                  <p className="text-sm opacity-80">Create comprehensive reports</p>
-                </div>
-              </div>
-            </button>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+          className="card"
+        >
+          <div className="card-header">
+            <h2 className="card-title">Quick Actions</h2>
           </div>
-        </div>
+          <div className="card-content">
+            <div className="space-y-3">
+              <button className="w-full p-3 bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-900/30 transition-colors duration-200 text-left">
+                <div className="flex items-center space-x-3">
+                  <Building2 className="h-5 w-5" />
+                  <div>
+                    <p className="font-medium">Add New Wereda</p>
+                    <p className="text-sm opacity-80">Register a new church branch</p>
+                  </div>
+                </div>
+              </button>
+              <button className="w-full p-3 bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-300 rounded-lg hover:bg-green-200 dark:hover:bg-green-900/30 transition-colors duration-200 text-left">
+                <div className="flex items-center space-x-3">
+                  <Users className="h-5 w-5" />
+                  <div>
+                    <p className="font-medium">Manage Users</p>
+                    <p className="text-sm opacity-80">Create and manage admin accounts</p>
+                  </div>
+                </div>
+              </button>
+              <button className="w-full p-3 bg-purple-100 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 rounded-lg hover:bg-purple-200 dark:hover:bg-purple-900/30 transition-colors duration-200 text-left">
+                <div className="flex items-center space-x-3">
+                  <TrendingUp className="h-5 w-5" />
+                  <div>
+                    <p className="font-medium">Generate Reports</p>
+                    <p className="text-sm opacity-80">Create comprehensive reports</p>
+                  </div>
+                </div>
+              </button>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </div>
   );

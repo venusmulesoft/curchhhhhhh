@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
-import { mockUsers, mockHageresibket } from '../data/mockData';
+import { authService } from '../services/authService';
+import { storageService } from '../services/storageService';
+import { toast } from 'react-hot-toast';
 
 const AuthContext = createContext();
 
@@ -7,18 +9,19 @@ const initialState = {
   user: null,
   isAuthenticated: false,
   isLoading: true,
-  userType: null, // 'wereda_admin', 'Admin', or 'super_admin'
+  userType: null,
   token: null,
+  permissions: [],
 };
 
 const authReducer = (state, action) => {
   switch (action.type) {
-    case 'LOGIN_START':
+    case 'AUTH_START':
       return {
         ...state,
         isLoading: true,
       };
-    case 'LOGIN_SUCCESS':
+    case 'AUTH_SUCCESS':
       return {
         ...state,
         user: action.payload.user,
@@ -26,8 +29,9 @@ const authReducer = (state, action) => {
         isLoading: false,
         userType: action.payload.userType,
         token: action.payload.token,
+        permissions: action.payload.permissions || [],
       };
-    case 'LOGIN_FAILURE':
+    case 'AUTH_FAILURE':
       return {
         ...state,
         user: null,
@@ -35,20 +39,22 @@ const authReducer = (state, action) => {
         isLoading: false,
         userType: null,
         token: null,
+        permissions: [],
       };
-    case 'LOGOUT':
+    case 'AUTH_LOGOUT':
       return {
-        ...state,
-        user: null,
-        isAuthenticated: false,
+        ...initialState,
         isLoading: false,
-        userType: null,
-        token: null,
       };
     case 'SET_LOADING':
       return {
         ...state,
         isLoading: action.payload,
+      };
+    case 'UPDATE_USER':
+      return {
+        ...state,
+        user: { ...state.user, ...action.payload },
       };
     default:
       return state;
@@ -60,112 +66,103 @@ export const AuthProvider = ({ children }) => {
 
   // Check for existing session on app load
   useEffect(() => {
-    const checkAuth = () => {
-      const token = localStorage.getItem('authToken');
-      const userData = localStorage.getItem('userData');
-      
-      if (token && userData) {
-        try {
-          const user = JSON.parse(userData);
-          const userType = user.role === 'super_admin' ? 'super_admin' : 
-                         user.role === 'Admin' ? 'Admin' : 'wereda_admin';
+    const initializeAuth = async () => {
+      try {
+        const token = storageService.getToken();
+        const userData = storageService.getUserData();
+        
+        if (token && userData) {
+          const userType = authService.getUserType(userData);
+          const permissions = authService.getUserPermissions(userData);
           
           dispatch({
-            type: 'LOGIN_SUCCESS',
+            type: 'AUTH_SUCCESS',
             payload: {
-              user,
+              user: userData,
               userType,
               token,
+              permissions,
             },
           });
-        } catch (error) {
-          console.error('Error parsing stored user data:', error);
-          localStorage.removeItem('authToken');
-          localStorage.removeItem('userData');
+        } else {
+          dispatch({ type: 'SET_LOADING', payload: false });
         }
-      } else {
-        dispatch({ type: 'SET_LOADING', payload: false });
+      } catch (error) {
+        console.error('Error initializing auth:', error);
+        storageService.clearAuth();
+        dispatch({ type: 'AUTH_FAILURE' });
       }
     };
 
-    checkAuth();
+    initializeAuth();
   }, []);
 
-  const login = async (username, password, loginType) => {
-    dispatch({ type: 'LOGIN_START' });
+  const login = async (credentials, loginType) => {
+    dispatch({ type: 'AUTH_START' });
 
     try {
-      let user = null;
-      let userType = null;
-      let token = null;
+      const result = await authService.login(credentials, loginType);
+      
+      if (result.success) {
+        const { user, userType, token, permissions } = result.data;
+        
+        // Store in localStorage
+        storageService.setToken(token);
+        storageService.setUserData(user);
 
-      if (loginType === 'hageresibket') {
-        // Hageresibket login
-        const hageresibket = mockHageresibket.find(
-          h => h.superAdminUsername === username && h.superAdminPassword === password
-        );
+        dispatch({
+          type: 'AUTH_SUCCESS',
+          payload: {
+            user,
+            userType,
+            token,
+            permissions,
+          },
+        });
 
-        if (hageresibket) {
-          user = hageresibket;
-          userType = 'super_admin';
-          token = `hageresibket_${Date.now()}`;
-        } else {
-          throw new Error('Invalid credentials');
-        }
+        toast.success('Login successful!');
+        return { success: true, userType };
       } else {
-        // WeredaBetekihinet login
-        const foundUser = mockUsers.find(
-          u => u.username === username && u.password === password
-        );
-
-        if (foundUser) {
-          user = foundUser;
-          userType = foundUser.role;
-          token = `wereda_${Date.now()}`;
-        } else {
-          throw new Error('Invalid credentials');
-        }
+        throw new Error(result.message);
       }
-
-      // Store in localStorage
-      localStorage.setItem('authToken', token);
-      localStorage.setItem('userData', JSON.stringify(user));
-
-      dispatch({
-        type: 'LOGIN_SUCCESS',
-        payload: {
-          user,
-          userType,
-          token,
-        },
-      });
-
-      return { success: true, userType };
     } catch (error) {
-      dispatch({ type: 'LOGIN_FAILURE' });
+      dispatch({ type: 'AUTH_FAILURE' });
+      toast.error(error.message || 'Login failed. Please check your credentials.');
       throw error;
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userData');
-    dispatch({ type: 'LOGOUT' });
+  const logout = async () => {
+    try {
+      await authService.logout();
+      storageService.clearAuth();
+      dispatch({ type: 'AUTH_LOGOUT' });
+      toast.success('Logged out successfully');
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Still clear local state even if server logout fails
+      storageService.clearAuth();
+      dispatch({ type: 'AUTH_LOGOUT' });
+    }
   };
 
   const updateUser = (updatedUser) => {
     if (state.user) {
       const newUser = { ...state.user, ...updatedUser };
-      localStorage.setItem('userData', JSON.stringify(newUser));
+      storageService.setUserData(newUser);
       dispatch({
-        type: 'LOGIN_SUCCESS',
-        payload: {
-          user: newUser,
-          userType: state.userType,
-          token: state.token,
-        },
+        type: 'UPDATE_USER',
+        payload: updatedUser,
       });
     }
+  };
+
+  const hasPermission = (permission) => {
+    return state.permissions.includes(permission) || state.userType === 'super_admin';
+  };
+
+  const hasRole = (role) => {
+    return state.userType === role;
   };
 
   const value = {
@@ -173,6 +170,8 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     updateUser,
+    hasPermission,
+    hasRole,
   };
 
   return (

@@ -3,14 +3,10 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import HageresibketSidebar from '../../components/hageresibket/HageresibketSidebar';
 import HageresibketHeader from '../../components/hageresibket/HageresibketHeader';
 import DashboardHome from './DashboardHome';
-import WeredaManagement from './WeredaManagement';
-import UserManagement from './UserManagement';
-import SystemSettings from './SystemSettings';
-import Reports from './Reports';
 
 const HageresibketDashboard = () => {
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
       {/* Sidebar */}
       <HageresibketSidebar />
       
@@ -20,14 +16,11 @@ const HageresibketDashboard = () => {
         <HageresibketHeader />
         
         {/* Page Content */}
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-6">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 dark:bg-gray-900 p-6">
           <Routes>
             <Route path="/" element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<DashboardHome />} />
-            <Route path="wereda" element={<WeredaManagement />} />
-            <Route path="users" element={<UserManagement />} />
-            <Route path="settings" element={<SystemSettings />} />
-            <Route path="reports" element={<Reports />} />
+            {/* Add other routes as needed */}
           </Routes>
         </main>
       </div>
