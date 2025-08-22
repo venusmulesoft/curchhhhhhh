@@ -26,7 +26,7 @@ const Reports = () => {
   };
 
   const getSystemStats = () => {
-    const totalWereda = mockData.weredaBetekihinet.length;
+    const totalWereda = mockData.mockWeredaBetekihinet.length;
     const totalAtbiya = mockData.atbiya.length;
     const totalBelievers = mockData.believers.length;
     const totalBaptisms = mockData.baptisms.length;
@@ -44,7 +44,7 @@ const Reports = () => {
   };
 
   const getWeredaPerformance = () => {
-    return mockData.weredaBetekihinet.map(wereda => {
+    return mockData.mockWeredaBetekihinet.map(wereda => {
       const atbiya = mockData.atbiya.filter(a => a.weredaId === wereda.id);
       const believers = mockData.believers.filter(b => atbiya.some(a => a.id === b.atbiyaId));
       const baptisms = mockData.baptisms.filter(b => atbiya.some(a => a.id === b.atbiyaId));
@@ -348,7 +348,7 @@ const Reports = () => {
                 className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="all">All Wereda</option>
-                {mockData.weredaBetekihinet.map(wereda => (
+                {mockData.mockWeredaBetekihinet.map(wereda => (
                   <option key={wereda.id} value={wereda.id}>{wereda.name}</option>
                 ))}
               </select>

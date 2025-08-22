@@ -3,7 +3,7 @@ import { Plus, Search, Edit, Trash2, Eye, Users, MapPin, Phone, Mail, Shield, Ch
 import * as mockData from '../../data/mockData';
 
 const WeredaManagement = () => {
-  const [weredaList, setWeredaList] = useState(mockData.weredaBetekihinet);
+  const [weredaList, setWeredaList] = useState(mockData.mockWeredaBetekihinet);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [showAddModal, setShowAddModal] = useState(false);
