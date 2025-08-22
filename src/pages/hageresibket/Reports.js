@@ -27,11 +27,11 @@ const Reports = () => {
 
   const getSystemStats = () => {
     const totalWereda = mockData.mockWeredaBetekihinet.length;
-    const totalAtbiya = mockData.atbiya.length;
-    const totalBelievers = mockData.believers.length;
-    const totalBaptisms = mockData.baptisms.length;
-    const totalMarriages = mockData.marriages.length;
-    const totalDeaths = mockData.deaths.length;
+    const totalAtbiya = mockData.mockAtbiya.length;
+    const totalBelievers = mockData.mockBelievers.length;
+    const totalBaptisms = mockData.mockBaptisms.length;
+    const totalMarriages = mockData.mockMarriages.length;
+    const totalDeaths = mockData.mockDeaths.length;
 
     return {
       totalWereda,
